@@ -1,4 +1,8 @@
 # Ultimate FastAPI + LangChain AI Agent Boilerplate (Core Lite)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110.0-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
+[![LangChain](https://img.shields.io/badge/LangChain-Enabled-green.svg)](https://www.langchain.com)
+[![npm](https://img.shields.io/badge/npm-create--ai--agent--boilerplate-CB3837?logo=npm)](https://www.npmjs.com/package/create-ai-agent-boilerplate)
 
 Welcome to the ultimate open-source infrastructure foundation for building production-grade AI Automation Agents, asynchronous backend microservices, and specialized workflows. Designed explicitly for B2B AI Automation Agencies (AAA) and indie hackers who want to build and ship software rapidly.
 
