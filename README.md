@@ -1,57 +1,113 @@
-# Ultimate FastAPI + LangChain AI Agent Boilerplate (Core Lite)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110.0-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
-[![LangChain](https://img.shields.io/badge/LangChain-Enabled-green.svg)](https://www.langchain.com)
-[![npm](https://img.shields.io/badge/npm-create--ai--agent--boilerplate-CB3837?logo=npm)](https://www.npmjs.com/package/create-ai-agent-boilerplate)
+# FastAPI + LangChain AI Agent Starter
 
-Welcome to the ultimate open-source infrastructure foundation for building production-grade AI Automation Agents, asynchronous backend microservices, and specialized workflows. Designed explicitly for B2B AI Automation Agencies (AAA) and indie hackers who want to build and ship software rapidly.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](https://www.python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![LangChain](https://img.shields.io/badge/LangChain-1C3C3C.svg)](https://www.langchain.com)
 
-This core repository provides a clean, ultra-lightweight environment layout to eliminate tedious structural configuration loops and get your AI features running locally in under 5 minutes.
+A small, free FastAPI app that puts an LLM agent behind a JSON endpoint. Clone it, add your OpenAI key, and you have a working `POST /api/v1/agent/run` you can call from any frontend, script or automation tool.
+
+It's one file of real code, so you can read all of it in two minutes and change anything.
+
+- One FastAPI app with a health check and an agent endpoint
+- LangChain prompt → model chain, called async so the server stays responsive
+- Typed request body with Pydantic, so `/docs` shows exactly what to send
+- Keys and model name read from `.env`, never hard-coded
+- MIT licensed: use it in personal or client work
 
 ---
 
-## UPGRADE TO THE COMPLETE PRODUCTION-READY PRO VERSION
-> **Looking to save an extra 40+ hours of setup, deploy structural database endpoints, and monetize your apps instantly?**
-> ### [Get the AI Agent Boilerplate PRO Stack Here!](https://theapplab.gumroad.com/l/ai-agent-boilerplate)
-> **The Pro Bundle Includes:** Fully configured asynchronous input payload parsing, structural enterprise model routing filters, **Production Stripe Webhook Payment Gateway Listeners**, advanced Pydantic data schemas, and pre-packaged local environment templates ready for immediate global deployment.
+## Quickstart
 
----
+You need Python 3.10 or newer and an [OpenAI API key](https://platform.openai.com/api-keys).
 
-## Features Included in the Core Framework
-- **FastAPI Framework Engine:** Production-ready asynchronous route handler framework optimized for highly scalable, sub-millisecond execution times.
-- **LangChain Core Integration:** Clean, modern infrastructure setup configured natively to pipe incoming data matrices straight into advanced Language Models.
-- **Secure Configuration Mapping:** Isolated local environment properties layer to ensure your production API keys are completely protected from exposure threats.
-
-## Quick Local Start Setup Guide
-
-Follow these simple structural commands to run this AI boilerplate locally on your workspace:
-
-### 1. Download the Project Blueprints
 ```bash
-git clone https://github.com
+git clone https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate.git
 cd ultimate-fastapi-langchain-boilerplate
-```
 
-### 2. Configure Your Isolated Environment Wrapper
-```bash
 python -m venv .venv
-# On Windows Activation:
-.venv\Scripts\Activate.ps1
-# On Mac/Linux Activation:
-source .venv/bin/activate
-```
+source .venv/bin/activate          # Windows: .venv\Scripts\Activate.ps1
 
-### 3. Install System Dependencies
-```bash
-pip install fastapi uvicorn langchain-openai python-dotenv
-```
+pip install -r requirements.txt
+cp .env.example .env               # then paste your key into OPENAI_API_KEY
 
-### 4. Fire Up the Microservice Engine
-```bash
 uvicorn main:app --reload
 ```
-Open your browser and navigate to `http://127.0.0.1:8000` to verify your environment path link is completely operational!
+
+Open http://127.0.0.1:8000/docs to try the endpoint in your browser, or call it from a terminal:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/agent/run \
+  -H "Content-Type: application/json" \
+  -d '{"user_input": "Write a 3-step onboarding email sequence for a B2B SaaS"}'
+```
+
+```json
+{ "success": true, "agent_response": "Email 1: Welcome..." }
+```
 
 ---
-## Operational License
-This open-source core architecture is distributed freely under the MIT License. To access enterprise billing capabilities and advanced API validation pipelines, check out our [Premium Pro Package License](https://your-gumroad-link-here).
+
+## The API
+
+| Method | Path | What it does |
+|---|---|---|
+| `GET` | `/` | Health check. Returns `{"status": "active", ...}`. |
+| `POST` | `/api/v1/agent/run` | Sends your input to the model and returns its answer. |
+| `GET` | `/docs` | Interactive API docs (built in to FastAPI). |
+
+Request body for `/api/v1/agent/run`:
+
+| Field | Required | Default |
+|---|---|---|
+| `user_input` | yes | — |
+| `system_instruction` | no | `"You are an advanced B2B operations optimization assistant."` |
+
+## Configuration
+
+Set these in `.env`:
+
+| Variable | Required | Default |
+|---|---|---|
+| `OPENAI_API_KEY` | yes | — |
+| `OPENAI_MODEL` | no | `gpt-4o-mini` |
+
+## Project layout
+
+```text
+.
+├── main.py            # the whole app: routes, request model, LangChain chain
+├── requirements.txt
+├── .env.example       # copy to .env and add your key
+└── LICENSE            # MIT
+```
+
+## Ideas for what to build next
+
+- Change `system_instruction` per route to make specialised agents (support, research, sales emails).
+- Swap `ChatOpenAI` for another LangChain chat model to use a different provider.
+- Add an API key check on the route before you put it on the internet.
+
+---
+
+## Need the rest of the stack?
+
+This starter is the backend endpoint. A real AI product also needs logins, separate data for each customer, live streaming of agent output, cost tracking and a deploy setup. That part is what **AI Agent Boilerplate Pro** is for.
+
+| | This free starter | Pro |
+|---|---|---|
+| FastAPI agent endpoint | ✅ | ✅ |
+| Next.js dashboard | — | ✅ |
+| Supabase login + per-customer data isolation (RLS) | — | ✅ |
+| Agent output streamed live to the browser | — | ✅ |
+| Token and cost tracking per run | — | ✅ |
+| Multi-agent CrewAI crews + white-label client portal | — | Agency tier |
+| Price | Free, MIT | One-time payment, full source |
+
+**[See what's in Pro →](https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=github&utm_medium=readme&utm_campaign=free_starter)**
+
+## License
+
+MIT. See [LICENSE](LICENSE).
+
+Found a bug or want something added? [Open an issue](https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate/issues). A ⭐ helps other developers find this repo.
