@@ -13,7 +13,7 @@ This core repository provides a clean, ultra-lightweight environment layout to e
 ## UPGRADE TO THE COMPLETE PRODUCTION-READY PRO VERSION
 > **Looking to save an extra 40+ hours of setup, deploy structural database endpoints, and monetize your apps instantly?**
 > ### [Get the AI Agent Boilerplate PRO Stack Here!](https://theapplab.gumroad.com/l/ai-agent-boilerplate)
-> **The Pro Bundle Includes:** Fully configured asynchronous input payload parsing, structural enterprise model routing filters, **Production Stripe Webhook Payment Gateway Listeners**, advanced Pydantic data schemas, and pre-packaged local environment templates ready for immediate global deployment.
+> **The Pro stack includes:** a Next.js + FastAPI + CrewAI + Supabase monorepo with Supabase Auth, row-level-security multi-tenancy, SSE-streamed agent runs, per-run token and cost tracking, pgvector memory, ready-made CrewAI crews, a white-label client portal and deploy scripts for Vercel and Railway.
 
 ---
 
@@ -28,7 +28,7 @@ Follow these simple structural commands to run this AI boilerplate locally on yo
 
 ### 1. Download the Project Blueprints
 ```bash
-git clone https://github.com
+git clone https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate.git
 cd ultimate-fastapi-langchain-boilerplate
 ```
 
@@ -43,15 +43,28 @@ source .venv/bin/activate
 
 ### 3. Install System Dependencies
 ```bash
-pip install fastapi uvicorn langchain-openai python-dotenv
+pip install -r requirements.txt
 ```
 
-### 4. Fire Up the Microservice Engine
+### 4. Add Your OpenAI Key
+```bash
+cp .env.example .env
+# then edit .env and paste your key into OPENAI_API_KEY
+```
+
+### 5. Fire Up the Microservice Engine
 ```bash
 uvicorn main:app --reload
 ```
 Open your browser and navigate to `http://127.0.0.1:8000` to verify your environment path link is completely operational!
 
+Try the agent from the interactive docs at `http://127.0.0.1:8000/docs`, or:
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/agent/run \
+  -H 'Content-Type: application/json' \
+  -d '{"user_input": "Draft a 3-step onboarding email sequence for a B2B SaaS"}'
+```
+
 ---
 ## Operational License
-This open-source core architecture is distributed freely under the MIT License. To access enterprise billing capabilities and advanced API validation pipelines, check out our [Premium Pro Package License](https://your-gumroad-link-here).
+This open-source core architecture is distributed freely under the MIT License. For multi-agent crews, multi-tenant auth and a client portal, check out the [Pro version](https://theapplab.gumroad.com/l/ai-agent-boilerplate).
