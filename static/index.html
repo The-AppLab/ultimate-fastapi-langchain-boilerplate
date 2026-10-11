@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent stream demo</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
+  textarea, input { width: 100%; box-sizing: border-box; font: inherit; padding: .5rem; margin: .25rem 0 .75rem; }
+  button { font: inherit; padding: .5rem 1rem; }
+  #out { white-space: pre-wrap; border: 1px solid #ddd; padding: 1rem; min-height: 6rem; margin-top: 1rem; }
+  small { color: #666; }
+</style>
+</head>
+<body>
+<h1>Agent stream demo</h1>
+<p><small>Calls <code>POST /api/v1/agent/stream</code> and prints tokens as they arrive. Uses <code>fetch</code>, not <code>EventSource</code>, so the token goes in a header instead of the URL.</small></p>
+<label>Supabase access token <small>(only if auth is on)</small><input id="token" placeholder="eyJhbGciOi..."></label>
+<label>Prompt<textarea id="prompt" rows="3">Write a 3-step onboarding email sequence for a B2B SaaS</textarea></label>
+<button id="go">Run</button>
+<div id="out"></div>
+<script>
+document.getElementById("go").onclick = async () => {
+  const out = document.getElementById("out");
+  out.textContent = "";
+  const headers = { "Content-Type": "application/json" };
+  const token = document.getElementById("token").value.trim();
+  if (token) headers.Authorization = "Bearer " + token;
+  const res = await fetch("/api/v1/agent/stream", {
+    method: "POST", headers,
+    body: JSON.stringify({ user_input: document.getElementById("prompt").value }),
+  });
+  if (!res.ok) { out.textContent = res.status + " " + await res.text(); return; }
+  const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+  let buf = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += value;
+    let i;
+    while ((i = buf.indexOf("\n\n")) >= 0) {
+      const frame = buf.slice(0, i); buf = buf.slice(i + 2);
+      const event = (frame.match(/^event: (.*)$/m) || [])[1];
+      const data = (frame.match(/^data: (.*)$/m) || [])[1];
+      if (!event || !data) continue;  // keepalive comment
+      const msg = JSON.parse(data);
+      if (event === "token") out.textContent += msg.text;
+      if (event === "error") out.textContent += "\n[error] " + msg.message;
+    }
+  }
+};
+</script>
+</body>
+</html>
