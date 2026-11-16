@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Agent Boilerplate Pro · The App Lab</title>
+<meta name="description" content="Ship an AI agent product on Next.js 16 + FastAPI + Supabase. Multi-tenant workspaces, streaming runs, pgvector knowledge base, cost metering, tests against the real database. Full source, one-time payment.">
+<link rel="canonical" href="https://the-applab.github.io/ultimate-fastapi-langchain-boilerplate/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Agent Boilerplate Pro · The App Lab">
+<meta property="og:description" content="Ship an AI agent product on Next.js 16 + FastAPI + Supabase. Multi-tenant, streaming, metered, tested. Full source, one-time payment.">
+<meta property="og:image" content="https://the-applab.github.io/ultimate-fastapi-langchain-boilerplate/assets/og.png">
+<meta property="og:url" content="https://the-applab.github.io/ultimate-fastapi-langchain-boilerplate/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B0F14;--panel:#111823;--panel2:#0E141C;--line:#223042;--text:#E8EEF4;--muted:#98A6B5;--green:#22D37E;--green2:#15A864;--amber:#F5B82E;--max:1120px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.muted{color:var(--muted)}
+.eyebrow{display:inline-block;padding:6px 10px;border-radius:6px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;background:rgba(34,211,126,.12);color:var(--green)}
+.eyebrow.amber{background:rgba(245,184,46,.14);color:var(--amber)}
+h1,h2,h3{letter-spacing:-.02em;line-height:1.1}
+h1{font-size:clamp(34px,5.4vw,62px);font-weight:800;letter-spacing:-.03em}
+h2{font-size:clamp(26px,3.4vw,40px);font-weight:700;margin-top:14px}
+h3{font-size:20px;font-weight:700}
+p.lead{font-size:clamp(17px,1.6vw,21px);color:var(--muted);max-width:640px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:10px;font-weight:600;font-size:16px;border:1px solid var(--line);color:var(--text);background:var(--panel);transition:transform .08s ease,background .15s ease}
+.btn:hover{text-decoration:none;background:#16202c;transform:translateY(-1px)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#06130c}
+.btn.primary:hover{background:#2ee08b}
+.btn:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.82);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid rgba(34,48,66,.6)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:700;letter-spacing:-.01em;font-size:17px}
+.logo:hover{text-decoration:none}
+.logo svg{width:30px;height:30px}
+.logo b{color:var(--green);font-weight:700}
+.nav nav{display:flex;gap:22px;align-items:center;font-size:14px;color:var(--muted)}
+.nav nav a{color:var(--muted)}
+.nav nav a:hover{color:var(--text);text-decoration:none}
+.nav .btn{padding:9px 14px;font-size:14px}
+@media (max-width:820px){.nav nav a.hide{display:none}}
+/* hero */
+.hero{position:relative;padding:72px 0 40px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 480px at 80% -10%,rgba(34,211,126,.16),transparent 60%),radial-gradient(600px 400px at -10% 100%,rgba(34,211,126,.07),transparent 60%);pointer-events:none}
+.hero .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(180deg,rgba(0,0,0,.9),transparent);pointer-events:none}
+.hero .wrap{position:relative}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.fine{margin-top:16px;font-size:14px;color:var(--muted)}
+.fine span+span::before{content:"·";margin:0 8px;color:#3a4756}
+.frame{margin-top:48px;border-radius:14px;border:1px solid var(--line);background:var(--panel2);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(34,211,126,.08);overflow:hidden}
+.frame .bar{height:34px;background:#121a24;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:7px;padding:0 14px}
+.frame .bar i{width:10px;height:10px;border-radius:50%;background:#2a3645}
+.frame .bar span{margin-left:10px;color:var(--muted);font:500 12px 'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frame img{display:block;width:100%}
+.hero .frame img{max-height:600px;object-fit:cover;object-position:top}
+.stack{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(17,24,35,.85);font-size:14px;font-weight:500;color:var(--text)}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--green)}
+/* sections */
+section{padding:84px 0}
+section+section{border-top:1px solid rgba(34,48,66,.5)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+@media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.cards{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px}
+.card h3{margin-top:10px}
+.card p{color:var(--muted);margin-top:8px;font-size:15px}
+.card .k{font:600 12px 'JetBrains Mono',monospace;letter-spacing:.08em;color:var(--green);text-transform:uppercase}
+.card.agency{border-color:rgba(245,184,46,.35)}
+.card.agency .k{color:var(--amber)}
+.card.wide{grid-column:1/-1}
+.card.wide ul{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 28px;margin-top:12px;list-style:none;color:var(--text)}
+@media (max-width:700px){.card.wide ul{grid-template-columns:1fr}}
+.card.wide li::before{content:"▸";color:var(--amber);margin-right:8px}
+/* proof */
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+@media (max-width:900px){.shots{grid-template-columns:1fr}}
+.shot .frame{margin-top:0;height:230px}
+.shot .frame img{object-fit:cover;object-position:top;height:196px;width:100%}
+.shot figcaption{margin-top:12px;font-size:15px;color:var(--muted)}
+.shot figcaption b{color:var(--text);font-weight:600}
+.note{margin-top:22px;font-size:14px;color:var(--muted)}
+/* tested */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+@media (max-width:700px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+.stat .n{font:600 44px/1 'JetBrains Mono',monospace;color:var(--green);letter-spacing:-.03em}
+.stat p{color:var(--muted);margin-top:10px;font-size:15px}
+.tlist{margin-top:26px;list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:10px 32px;font-size:16px}
+@media (max-width:700px){.tlist{grid-template-columns:1fr}}
+.tlist li::before{content:"▸";color:var(--green);margin-right:8px}
+/* pricing */
+.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:36px}
+@media (max-width:760px){.plans{grid-template-columns:1fr}}
+.plan{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px}
+.plan.agency{border-color:rgba(245,184,46,.5);position:relative}
+.plan .price{display:flex;align-items:baseline;gap:8px;margin-top:10px}
+.plan .price .n{font:600 46px/1 'JetBrains Mono',monospace;letter-spacing:-.03em}
+.plan .price small{color:var(--muted);font-size:14px}
+.plan ul{list-style:none;margin-top:20px;display:grid;gap:9px;font-size:15px}
+.plan li::before{content:"✓";color:var(--green);margin-right:10px;font-weight:700}
+.plan li.plus::before{color:var(--amber)}
+.plan .btn{width:100%;margin-top:24px}
+.plan .who{margin-top:14px;color:var(--muted);font-size:14px}
+.notincl{margin-top:22px;padding:18px 20px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:14px}
+.notincl b{color:var(--text)}
+/* maker */
+.maker{display:grid;grid-template-columns:1fr 1.6fr;gap:40px;align-items:start}
+@media (max-width:760px){.maker{grid-template-columns:1fr}}
+.maker p{color:var(--muted);font-size:17px;margin-top:12px}
+/* faq */
+.faq{margin-top:30px;display:grid;gap:10px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 20px}
+summary{cursor:pointer;padding:16px 0;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--green);font:500 22px/1 'JetBrains Mono',monospace}
+details[open] summary::after{content:"–"}
+details p{padding:0 0 18px;color:var(--muted);font-size:15px}
+/* final */
+.final{text-align:center;padding:90px 0}
+.final h2{margin-top:0}
+footer{border-top:1px solid rgba(34,48,66,.5);padding:36px 0 50px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer nav a{color:var(--muted)}
+footer nav a:hover{color:var(--text)}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:5px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="The App Lab">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0B0F14"/><path d="M25 10v16.5L12.8 47.2C11 50.5 13.3 54 17 54h30c3.7 0 6-3.5 4.2-6.8L39 26.5V10" fill="none" stroke="#22D37E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M21 10h22" stroke="#22D37E" stroke-width="4" stroke-linecap="round"/><path d="M27 35l6 5.5-6 5.5" fill="none" stroke="#E8EEF4" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/><rect x="36" y="44.5" width="8" height="3" rx="1.5" fill="#22D37E"/></svg>
+      The App <b>Lab</b>
+    </a>
+    <nav aria-label="Page">
+      <a class="hide" href="#ships">What ships</a>
+      <a class="hide" href="#proof">Proof</a>
+      <a class="hide" href="#pricing">Pricing</a>
+      <a class="hide" href="#faq">FAQ</a>
+      <a class="hide" href="https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate">Free starter</a>
+      <a class="btn primary" href="https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=site&utm_medium=nav&utm_campaign=december">Get the kit</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="grid" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow">Next.js 16 · FastAPI · Supabase · one-time payment</span>
+    <h1 style="margin-top:18px;max-width:860px">Ship your AI agent product on a foundation that is already built.</h1>
+    <p class="lead">Multi-tenant workspaces, live streaming runs, a pgvector knowledge base and cost metering, with tests that run against the real database. Full source, yours to keep.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=site&utm_medium=hero&utm_campaign=december">Get the kit · from $99</a>
+      <a class="btn" href="https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate">Try the free starter on GitHub</a>
+    </div>
+    <div class="fine"><span>14-day refund</span><span>v1.0.2</span><span>Updates to the version you buy included</span><span>No license server</span></div>
+    <div class="stack" aria-label="Built with">
+      <span class="chip"><i></i>Next.js 16 + React 19</span><span class="chip"><i></i>FastAPI</span><span class="chip"><i></i>Supabase Auth + RLS</span><span class="chip"><i></i>pgvector</span><span class="chip"><i></i>LiteLLM</span><span class="chip"><i></i>CrewAI</span><span class="chip"><i></i>Tailwind 4 + shadcn/ui</span>
+    </div>
+    <figure class="frame">
+      <div class="bar"><i></i><i></i><i></i><span>app.yourproduct.com/runs/8f2c… · live</span></div>
+      <img src="assets/live-run.jpg" width="1200" height="750" alt="The live run view: an agent calls knowledge_search, the passages it found and the answer stream in, with tokens and cost for the run" loading="eager">
+    </figure>
+  </div>
+</section>
+
+<section id="ships">
+  <div class="wrap">
+    <span class="eyebrow">What ships</span>
+    <h2>The 80% every agent product needs, done once and tested.</h2>
+    <p class="lead">You add the part that makes your product yours: the agents, the tools, the prompts and the customers.</p>
+    <div class="cards">
+      <div class="card"><div class="k">Multi-tenant</div><h3>Workspaces with real isolation</h3><p>Owner, admin and member roles, email invitations, and row-level security on every table. The API queries as the signed-in user, so Postgres itself blocks cross-tenant reads.</p></div>
+      <div class="card"><div class="k">Live runs</div><h3>Streaming you can trust</h3><p>Tokens, tool calls and results stream in over SSE. A dropped connection resumes with Last-Event-ID. Runs sit in a Postgres-backed queue with cancel, timeouts and crash recovery.</p></div>
+      <div class="card"><div class="k">Any model</div><h3>LiteLLM underneath</h3><p>OpenAI, Anthropic, Gemini, Groq, Ollama and anything LiteLLM supports. Switch with <code>DEFAULT_MODEL</code> or per agent in the editor.</p></div>
+      <div class="card"><div class="k">Tools + memory</div><h3>Tool calling and a knowledge base</h3><p>Four built-in tools: web search, HTTP fetch that blocks private addresses, RAG over pgvector, and a calculator. Upload text or markdown per workspace or per agent. Typed Pydantic outputs with one automatic repair attempt.</p></div>
+      <div class="card"><div class="k">Costs</div><h3>Meter it, cap it</h3><p>Tokens and USD per run from LiteLLM's price table. A monthly budget per workspace refuses runs once reached. Step and token caps per agent.</p></div>
+      <div class="card"><div class="k">Team + API</div><h3>Dashboard and API keys</h3><p>Agents, agent editor, run form, knowledge upload, live run, run history, usage and settings. Per-workspace API keys, stored hashed, for server-to-server calls.</p></div>
+      <div class="card agency wide"><div class="k">Agency tier adds</div><h3>For client work and white-label resale</h3>
+        <ul>
+          <li>Three ready-to-fork CrewAI crews: research, content, support triage</li>
+          <li>White-label client portal at <code>/p/&lt;workspace&gt;</code> or on the client's own domain</li>
+          <li>A <code>client</code> role that only sees its own agents and runs, enforced by RLS and tested</li>
+          <li>Deploy scripts for Supabase, Railway, Vercel and Modal</li>
+          <li>A license that covers client work and white-label, multi-tenant resale</li>
+          <li>Crews stream into the same run view, metered like everything else</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap">
+    <span class="eyebrow">See it running</span>
+    <h2>The real app, from the download, on a fresh Supabase.</h2>
+    <p class="lead">Nine screens, no mock-ups. <a href="https://claude.ai/artifact/VdGFV4RF7YVntX7Rb8Ur97">Click through the tour</a> or look at three of them here.</p>
+    <div class="shots">
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>/runs/8f2c… · live</span></div><img src="assets/live-run.jpg" alt="Live run with a knowledge_search tool call, tokens and cost" loading="lazy"></div><figcaption><b>Live run.</b> A support agent searches its knowledge base, answers, and reports tokens and cost.</figcaption></figure>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>/usage</span></div><img src="assets/usage.jpg" alt="Usage page with runs, tokens, cost and this month against a budget" loading="lazy"></div><figcaption><b>Usage.</b> Runs, tokens and cost per day and per agent, against the workspace budget.</figcaption></figure>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>portal.clientdomain.com</span></div><img src="assets/client-portal.jpg" alt="White-label client portal branded Acme AI Desk" loading="lazy"></div><figcaption><b>Client portal (Agency).</b> A client's own branded view, with only their agents and runs.</figcaption></figure>
+    </div>
+    <p class="note">Honest note: the model replies in these screenshots came from a local test model because no paid key was used for the shoot. Everything else on screen, including tool calls, pgvector search, streaming, metering, RLS and the portal, is the shipped code.</p>
+  </div>
+</section>
+
+<section id="tested">
+  <div class="wrap">
+    <span class="eyebrow">Tested, not promised</span>
+    <h2>The suite runs against real Postgres, pgvector and the real migrations.</h2>
+    <div class="stats">
+      <div class="stat"><div class="n">20 + 6</div><p>API integration tests plus agent-library tests in Starter. No API keys needed.</p></div>
+      <div class="stat"><div class="n">24 + 8</div><p>In Agency, including a real CrewAI crew run against a scripted model.</p></div>
+      <div class="stat"><div class="n">2 tenants</div><p>Seeded with near-identical documents, then searched across. Cross-tenant read, insert and delete are all refused.</p></div>
+    </div>
+    <ul class="tlist">
+      <li>Row-level security on every table, including vector memory</li>
+      <li>GitHub Actions CI on every push</li>
+      <li>Pinned dependencies: <code>uv.lock</code> and <code>package-lock.json</code></li>
+      <li>Dockerfiles for API and web, plus docker-compose</li>
+      <li>Typed outputs validated, with one automatic repair attempt</li>
+      <li>Fetch tool blocks private and internal addresses</li>
+    </ul>
+    <p class="note">There has been no outside security audit. The tests ship in the box so you can run them yourself before you build on it.</p>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <span class="eyebrow">Pricing</span>
+    <h2>One-time payment. Full source. Pick the tier that matches your work.</h2>
+    <div class="plans">
+      <div class="plan">
+        <div class="k mono muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase">Starter</div>
+        <div class="price"><span class="n">$99</span><small>one-time</small></div>
+        <div class="who">For one agent product you own.</div>
+        <ul>
+          <li>Next.js 16 dashboard, FastAPI API, Supabase schema</li>
+          <li>Multi-tenant workspaces with RLS, roles and invitations</li>
+          <li>Live runs over SSE, Postgres run queue</li>
+          <li>Tool calling and pgvector knowledge base</li>
+          <li>Token and cost metering, monthly budgets, API keys</li>
+          <li>20 API + 6 agent tests, CI, Dockerfiles, docker-compose</li>
+          <li>README with quickstart, architecture and manual deploy steps</li>
+        </ul>
+        <a class="btn" href="https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=site&utm_medium=pricing&utm_campaign=december&utm_content=starter">Get Starter · $99</a>
+      </div>
+      <div class="plan agency">
+        <div class="k mono" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber)">Agency</div>
+        <div class="price"><span class="n">$299</span><small>one-time</small></div>
+        <div class="who">For client work, white-label resale and crews.</div>
+        <ul>
+          <li>Everything in Starter</li>
+          <li class="plus">Three CrewAI crews: research, content, support triage</li>
+          <li class="plus">White-label client portal with a client role</li>
+          <li class="plus">Deploy scripts: Supabase, Railway, Vercel, Modal</li>
+          <li class="plus">License for client work and white-label resale</li>
+          <li class="plus">24 API + 8 agent tests, including a real crew run</li>
+        </ul>
+        <a class="btn primary" href="https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=site&utm_medium=pricing&utm_campaign=december&utm_content=agency">Get Agency · $299</a>
+      </div>
+    </div>
+    <div class="notincl"><b>What is not included, so there are no surprises:</b> a Stripe or billing integration for your customers (metering and budgets are included; charging is up to you), a hosted service, or support for your own infrastructure. 14-day refund, no questions asked.</div>
+  </div>
+</section>
+
+<section id="maker">
+  <div class="wrap maker">
+    <div><span class="eyebrow">Who made this</span><h2>Built by someone who kept rebuilding it.</h2></div>
+    <div>
+      <p>I'm Rob, and I run The App Lab. I kept rebuilding the same foundation for AI agent apps: sign-in, workspaces, row-level security, streaming, cost limits. So I built it once, with tests, and packaged it as AI Agent Boilerplate Pro.</p>
+      <p>I also keep a <a href="https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate">free MIT FastAPI + LangChain starter</a> on GitHub, and I answer every support email myself.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <span class="eyebrow">FAQ</span>
+    <h2>Questions people ask before buying.</h2>
+    <div class="faq">
+      <details><summary>Which models can I use?</summary><p>Anything LiteLLM supports: OpenAI, Anthropic, Gemini, Groq, Ollama and more. Set <code>DEFAULT_MODEL</code> once or pick a model per agent in the editor. You bring your own API keys.</p></details>
+      <details><summary>What do I need to run it locally?</summary><p>Node, Python 3.11+, Docker and the Supabase CLI. <code>cp .env.example .env</code>, then <code>make dev</code> starts Supabase locally and the API and web apps. API docs are at <code>/docs</code>.</p></details>
+      <details><summary>Does it include billing or Stripe?</summary><p>No. It includes token and cost metering, usage pages and monthly budgets per workspace. Charging your customers is up to you, and you can wire in whichever billing provider you prefer.</p></details>
+      <details><summary>What is the difference between Starter and Agency?</summary><p>Starter is the full product foundation for one agent product you own. Agency adds three CrewAI crews, the white-label client portal with a client role, deploy scripts for Supabase, Railway, Vercel and Modal, and a license that covers client work and white-label resale.</p></details>
+      <details><summary>How is it delivered and how do updates work?</summary><p>You download a zip from Gumroad right after checkout (currently v1.0.2). Updates to the version you bought show up in your Gumroad library. There is no license server and nothing phones home.</p></details>
+      <details><summary>Is there a hosted demo I can log into?</summary><p>Not yet. A hosted sandbox would need a model key with a spending cap and would expose the paid code to abuse. Instead there is a <a href="https://claude.ai/artifact/VdGFV4RF7YVntX7Rb8Ur97">nine-screen click-through tour</a> of the real app, and a 14-day refund if it is not what you expected once you run it.</p></details>
+      <details><summary>How secure is the multi-tenancy?</summary><p>Every table has row-level security, including the vector memory table, and the API queries as the signed-in user. A test seeds two customers with near-identical documents and checks that searches, raw SQL, inserts and deletes never cross workspaces. There has been no outside audit, and the tests ship with the code so you can run them yourself.</p></details>
+      <details><summary>Can I use it for client projects?</summary><p>Yes, with the Agency tier. Its license covers client work and white-label, multi-tenant resale of what you build. Starter covers one product you own.</p></details>
+      <details><summary>What if it is not for me?</summary><p>Email within 14 days and you get a refund, no questions asked. Problems getting it running are fixed first if you want them fixed.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Start from a foundation that already works.</h2>
+    <p class="lead" style="margin:14px auto 0">Full source, tests included, one-time payment, 14-day refund.</p>
+    <div class="cta" style="justify-content:center">
+      <a class="btn primary" href="https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=site&utm_medium=footer&utm_campaign=december">Get AI Agent Boilerplate Pro</a>
+      <a class="btn" href="https://theapplab-checklist.subscribepage.io/?utm_source=site&utm_medium=footer&utm_campaign=december">Not ready? Get the free production checklist</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 The App Lab · Made by Rob · Questions: use the contact link on the Gumroad page</div>
+    <nav aria-label="Links">
+      <a href="https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=site&utm_medium=footerlinks&utm_campaign=december">Gumroad</a>
+      <a href="https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate">Free starter</a>
+      <a href="https://dev.to/theapplab">Articles</a>
+      <a href="https://claude.ai/artifact/VdGFV4RF7YVntX7Rb8Ur97">Tour</a>
+      <a href="https://theapplab.gumroad.com/affiliates">Affiliates (30%)</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/banner.png" alt="FastAPI + LangChain AI Agent Starter by The App Lab" width="100%"></p>
+
 # FastAPI + LangChain AI Agent Starter
 
 [![CI](https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate/actions/workflows/ci.yml/badge.svg)](https://github.com/The-AppLab/ultimate-fastapi-langchain-boilerplate/actions/workflows/ci.yml)
@@ -166,7 +168,7 @@ This starter is the backend core. A product people pay for also needs a dashboar
 | 3 CrewAI crews + white-label client portal + deploy scripts | — | Agency tier |
 | Price | Free, MIT | One-time payment, full source |
 
-**[See what's in Pro →](https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=github&utm_medium=readme&utm_campaign=evergreen)**
+**[See what's in Pro →](https://theapplab.gumroad.com/l/ai-agent-boilerplate?utm_source=github&utm_medium=readme&utm_campaign=evergreen)** · [Screenshots, tests and FAQ on the product page](https://the-applab.github.io/ultimate-fastapi-langchain-boilerplate/)
 
 ## License
 
